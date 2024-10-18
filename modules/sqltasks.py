@@ -1,7 +1,8 @@
 import sqlite3
+import os
 class DatabaseTask:
     def __init__(self):
-        self.conn = sqlite3.connect("E:\projects\VoiceAssistent\databases\Assistent1.db")
+        self.conn = sqlite3.connect(f"{os.path.abspath(os.getcwd())}/databases/Assistent1.db")
         self.c = self.conn.cursor()
         self.create()
     def create(self):

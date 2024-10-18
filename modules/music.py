@@ -8,7 +8,7 @@ pygame.init()
 class Music:
     def __init__(self):
         "Initialization method"
-        self.folder_path = 'E:/projects/VoiceAssistent/tracks' # Set music folder
+        self.folder_path = f'{os.path.abspath(os.getcwd())}/tracks' # Set music folder
         self.audio_extensions = ['.mp3', '.wav', '.ogg', '.flac'] # Set music extensions
         self.files = [file for file in os.listdir(self.folder_path) if os.path.isfile(os.path.join(self.folder_path, file)) and
                 os.path.splitext(file)[1].lower() in self.audio_extensions] # Create a list with all songs

@@ -6,7 +6,7 @@ import os
 class Recognize:
     def __init__(self):
         """Preparing to recognize"""
-        model = Model("VoiceAssistent/model") # Loading model
+        model = Model(f"{os.path.abspath(os.getcwd())}/model") # Loading model
         self.recognizer = KaldiRecognizer(model, 16000) # Create a translator
         audio = pyaudio.PyAudio()
         self.stream = audio.open(format=pyaudio.paInt16, # Create a voice stream
