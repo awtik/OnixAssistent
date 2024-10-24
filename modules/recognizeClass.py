@@ -2,11 +2,18 @@ import json
 import pyaudio
 from vosk import Model, KaldiRecognizer
 import os
+import shutil
 
 class Recognize:
     def __init__(self):
         """Preparing to recognize"""
-        model = Model(f"{os.path.abspath(os.getcwd())}/model") # Loading model
+        try:
+            model = Model("C:/model") # Try to loading model
+        except: # If Error: create model folder in C:/
+            model_project_path = f"{os.path.abspath(os.curdir)}/model" # Find model in project folder
+            model_new_location = "C:/model" # Set new path for model
+            shutil.copytree(model_project_path, model_new_location) # Copy model from project to new path
+            model = Model(model_new_location) # Loading model again
         self.recognizer = KaldiRecognizer(model, 16000) # Create a translator
         audio = pyaudio.PyAudio()
         self.stream = audio.open(format=pyaudio.paInt16, # Create a voice stream

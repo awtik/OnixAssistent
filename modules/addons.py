@@ -41,9 +41,9 @@ class Addons:
                 "wind_speed": weather_data["wind"]["speed"]
             }
             
-            print(f'В городе {self.xlat.translate(weather['city'])} сейчас {self.xlat.translate(weather['description']).capitalize()}, {round(weather['temperature'])}°') # Return dict with sorted weather data
+            return f'В городе {self.xlat.translate(weather['city'])} сейчас {self.xlat.translate(weather['description']).capitalize()}, {round(weather['temperature'])}°' # Return dict with sorted weather data
         except requests.exceptions.RequestException as e:
-            print(f"Ошибка при получении данных о погоде: {e}")
+            return f"Ошибка при получении данных о погоде: {e}"
     
     def search(self, text, launch_word):
         prompt = ''
@@ -71,14 +71,14 @@ class Addons:
         table = '' # Out message
         n = 1 # Num of subject
         if date[6] == 6: # if sunday - Weekend. date[6] - day of week
-            print('Выходной')
+            return 'Выходной'
         if date[3] > 13: # if hour > 13:00 - show table for next day
             table += '    ' + self.wdays[date[6]+1].capitalize() + '\n' # Create a heading with a day
             for i in self.data[self.wdays[date[6]+1]]: # Create the out message
                 table += f'{n}) {i}\n'
-            print(table) # Show timetable
+            return table # Show timetable
         else:
             table += '    ' + self.wdays[date[6]].capitalize() + '\n' # Create a heading with a day
             for i in self.data[self.wdays[date[6]]]: # Create the out message for today
                 table += f'{n}) {i}\n'
-            print(table) # Show timetable
+            return table # Show timetable

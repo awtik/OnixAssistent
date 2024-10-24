@@ -37,4 +37,4 @@ def show_answers():
     output = ''
     for answ in db.get_answers():
         output += f'\n{answ[0]}) Text: {answ[1]}\nAnswer: \n{answ[2]}'
-    print(output)
+    return output

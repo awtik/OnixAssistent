@@ -6,6 +6,7 @@ from modules.sql import Database
 from modules.tasks import Tasks
 import random
 import json
+import os
 
 ################################################################################################
 wordKeys = {
@@ -63,13 +64,13 @@ class Assistent:
             ################################################################################################
             # Functions
             if self.checkwords(command, wordKeys['weather_words']):
-                self.addons.weather(self.city) # Launch weather func from Addons class with city arg
+                print(self.addons.weather(self.city)) # Launch weather func from Addons class with city arg
 
             if self.checkwords(command, wordKeys['gpt_words']) and not self.checkwords(command, wordKeys['task_words']):
                 print(get_answer(command)) # Print gpt answer
 
             if 'запросы' in command:
-                show_answers() # Show all gpt responses
+                print(show_answers()) # Show all gpt responses
             
             if self.checkwords(command, wordKeys['search_words']):
                 self.addons.search(command, self.launch_word)
@@ -96,7 +97,7 @@ class Assistent:
             ################################################################################################
             # Timetable
             if self.checkwords(command, wordKeys['timetable_words']):
-                self.addons.timetable()
+                print(self.addons.timetable())
             ################################################################################################
             # Exit
             if self.checkwords(command, wordKeys['exit_words']):

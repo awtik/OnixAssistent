@@ -20,11 +20,11 @@ class Tasks:
     def task_remove(self, text):
         for word in text.split():
             try:
-                id = text2num(word, 'ru')
+                id = text2num(word, 'ru') # Try to find num in the command
                 break
             except:
                 pass
-        self.db.del_task(id)
+        self.db.del_task(id) # Del task
     
     def show_tasks(self):
         output = ''
