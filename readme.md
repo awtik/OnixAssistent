@@ -19,7 +19,8 @@ pip install vosk pygame asyncio customtkinter platform cpuinfo psutil wmi os req
 > [!WARNING]
 > Only **Python**, Only **hardcore**
 
-# Using
+> [!TIP]
+> # Using
 1. Start **main.py**
 2. Close program
 3. Move application shortcuts into **C:/Onix/apps**
