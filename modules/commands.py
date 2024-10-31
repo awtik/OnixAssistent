@@ -3,9 +3,9 @@ import json
 import time
 from modules.addons import Addons
 from modules.music import Music
-from modules.tasks import Tasks
+from modules.apps import open_app_by_keyword
 
-with open('settings.json', encoding='utf-8') as f: # Getting settings from json
+with open('other/settings.json', encoding='utf-8') as f: # Getting settings from json
     data = json.load(f)
 city = data["city"] # Setting city from settings
 ################################################################################################
@@ -16,28 +16,26 @@ class Commands:
             'thx_words': ['спасибо', 'благодарю', 'заебись', 'отлично', 'молодец', 'прекрасно'],
             'time_words': ['время', 'часы'],
             'weather_words': ['погода', 'погоду', 'погоде', 'погодка'],
-            'gpt_words': ['запрос', 'генерация', 'придумай', 'придумать', 'придумали', 'создай'],
             'search_words': ['найди', 'поиск', 'поищи'],
             'exit_words': ['закройся', 'выход', 'отключись', 'пока'],
             'start_music_words': ['музыка', 'музыку'],
             'pause_music_words': ['пауза', 'приостанови', 'стоп', 'паузы', 'продолжи'],
             'next_track_words': ['следующий', 'пропусти', 'некст', 'скип', 'кип', 'следующее', 'следующая'],
-            'task_words': ['задачу', 'задачку', 'задач', 'задачи', 'задача'],
             'timetable_words': ['расписание', 'уроки', 'расписанием'],
             'create_words': ['создай', 'создать', 'добавь'],
             'del_words': ['удали', 'убери', 'вычеркни', 'утолить'],
             'show_words': ['покажи', 'список']
         } # Creating key words dict for check command
         ################################################################################################
-        self.addons, self.tsks, self.mixer, self.music = Addons(), Tasks(), Music(), False # Initialization Classes and set music to False
+        self.addons, self.mixer, self.music = Addons(), Music(), False # Initialization Classes and set music to False
     
     def slowly_output(self, text, outlabel, delay=0.02):
         "Method for slowly output in label for output"
-        outlabel.configure(text='')
+        outlabel.configure(text='') # Set outlabel empty
         for char in text:
-            current_text = outlabel.cget('text')
-            outlabel.configure(text=current_text + char)
-            time.sleep(delay)
+            current_text = outlabel.cget('text') # Getting current text
+            outlabel.configure(text=current_text + char) # Adding new char to current text
+            time.sleep(delay) # Delay
 
     def checkwords(self, command, wordlist):
         "Check key words in command"
@@ -57,6 +55,10 @@ class Commands:
             if self.checkwords(command, self.wordKeys['thx_words']):
                 self.slowly_output('Рад стараться!', outlabel)
             ################################################################################################
+            # Apps open
+            if command.startswith("оникс открой "): # If 'оникс открой' in command: open app
+                open_app_by_keyword(command, outlabel, self.slowly_output)
+            ################################################################################################
             # Functions
             if self.checkwords(command, self.wordKeys['weather_words']):
                 self.slowly_output('Получаем данные о погоде...', outlabel)
@@ -69,19 +71,11 @@ class Commands:
             if self.checkwords(command, self.wordKeys['time_words']):
                 self.slowly_output(self.addons.date_time(), outlabel)
             ################################################################################################
-            # Tasks
-            if self.checkwords(command, self.wordKeys['task_words']) and self.checkwords(command, self.wordKeys['create_words']):
-                self.tsks.task_create(command)
-            if self.checkwords(command, self.wordKeys['del_words']) and self.checkwords(command, self.wordKeys['task_words']):
-                self.tsks.task_remove(command)
-            if self.checkwords(command, self.wordKeys['task_words']) and self.checkwords(command, self.wordKeys['show_words']):
-                self.slowly_output(self.tsks.show_tasks(), outlabel)
-            ################################################################################################
             # Music
-            if self.checkwords(command, self.wordKeys['start_music_words']):
+            if self.checkwords(command, self.wordKeys['start_music_words']) and not 'открой' in command:
                 self.slowly_output(self.mixer.start_music(), outlabel)
                 self.music = True
-            if self.checkwords(command, self.wordKeys['pause_music_words']):
+            if self.checkwords(command, self.wordKeys['pause_music_words']) and not 'открой' in command:
                 self.mixer.pause_music()
             if self.checkwords(command, self.wordKeys['next_track_words']) and self.music:
                 self.slowly_output(self.mixer.next_track(), outlabel)

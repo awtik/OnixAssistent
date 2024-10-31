@@ -4,7 +4,7 @@ import datetime
 from translate import Translator
 import json
 from io import BytesIO
-from PIL import Image, ImageTk
+from PIL import Image
 from customtkinter import CTkImage
 
 class Addons:
@@ -21,7 +21,7 @@ class Addons:
             5: 'saturday',
             6: 'sunday'
         } # Create a trascript for days
-        with open('settings.json', encoding='utf-8') as f:
+        with open('other/settings.json', encoding='utf-8') as f:
             self.data = json.load(f) # Loading settings
 
     def weather(self, city, icon_label):
@@ -96,13 +96,13 @@ class Addons:
     
     def load_settings(self):
         "Method for loading settings"
-        with open('settings.json', encoding='utf-8') as f:
+        with open('other/settings.json', encoding='utf-8') as f:
             data = json.load(f)
             return data
     
     def save_settings(self, dataid, datavalue):
         "Method for saving settings"
-        with open('settings.json', encoding='utf-8') as f:
+        with open('other/settings.json', encoding='utf-8') as f:
             data = json.load(f)
         data[dataid] = datavalue
         with open('settings.json', 'w', encoding='utf-8') as f:
