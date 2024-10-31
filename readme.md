@@ -16,7 +16,8 @@
 ```
 pip install vosk pygame asyncio customtkinter platform cpuinfo psutil wmi os requests webbrowser datetime translate json io pillow g4f pyaudio shutil text2num
 ```
-Only **Python**, Only **hardcore**
+> [!WARNING]
+> Only **Python**, Only **hardcore**
 
 # Using
 1. Start **main.py**
