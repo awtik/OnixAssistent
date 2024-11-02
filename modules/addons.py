@@ -105,5 +105,5 @@ class Addons:
         with open('other/settings.json', encoding='utf-8') as f:
             data = json.load(f)
         data[dataid] = datavalue
-        with open('settings.json', 'w', encoding='utf-8') as f:
+        with open('other/settings.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)

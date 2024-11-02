@@ -9,18 +9,18 @@ def show_ai_chat(app):
     ai_window.geometry("450x350") # Set size for AI chat
     ai_window.title("AI Chat") # Set title
     ai_window.resizable(False, False) # Disable resize function
-    ai_window.grab_set() # Disable interaction with other windows
+    #ai_window.grab_set() # Disable interaction with other windows
     # Textbox for chat
     response_text = ctk.CTkTextbox(ai_window, wrap='word', width=400, height=250) # Create a textbox and set size
     response_text.pack(padx=10, pady=10)
     response_text.configure(state="disabled") # Disable interacting with textbox
     # Prompt Entrybox
-    entry = ctk.CTkEntry(ai_window, width=350) # Create entry
+    entry = ctk.CTkEntry(ai_window, width=400) # Create entry
     entry.pack(padx=10, pady=(0, 10))
     entry.bind('<Return>', lambda event: asyncio.run(send_message(entry, response_text, ai_window))) # IF keydown Enter - start send_message
     # Clear Chat button
-    clear_button = ctk.CTkButton(ai_window, text="Очистить чат", command=lambda: clear_chat(response_text)) # Create button for clear chat
-    clear_button.pack(pady=5)
+    clear_button = ctk.CTkButton(ai_window, text="Clear chat", command=lambda: clear_chat(response_text)) # Create button for clear chat
+    clear_button.pack(pady=5, anchor='w', padx=25)
 
 async def type_text(widget, text, delay=0.001):
     "Function for slowing print the text in AI Chat"
@@ -39,10 +39,10 @@ async def send_message(entry, response_text, app):
 
     entry.delete(0, 'end') # Clear entry box
     response_text.configure(state="normal") # Set normal state for textbox
-    response_text.insert('end', f"Вы: {prompt}\n") # Insert user msg into textbox
+    response_text.insert('end', f"Вы: {prompt}\n\n") # Insert user msg into textbox
     response_text.see('end') # automatic scrolling to the end
 
-    response = await get_answer(prompt) # Get answer from AI
+    response = 'AI: '+ await get_answer(prompt) # Get answer from AI
     await type_text(response_text, response, delay=0.02) # Slowing print AI's answer
     print('')
     response_text.configure(state="disabled") # Disable interacting with textbox again

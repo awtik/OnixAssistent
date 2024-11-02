@@ -24,7 +24,7 @@ def save_keywords(keywords, file_path='other/apps.json'):
 def open_app_by_keyword(command, outlabel, slowly_output, apps_folder='C:/Onix/apps'):
     "Open app by keyword"
     keyword = command.replace("оникс открой ", "").strip() # Get keword from command
-    keywords = load_keywords() # Loading keywords
+    keywords = load_keywords(outlabel, slowly_output) # Loading keywords
     # Searching app by keyword
     for app_name, app_keywords in keywords.items():
         if keyword.lower() in app_keywords.lower():  # Lowercase comparison

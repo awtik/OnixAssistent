@@ -7,7 +7,7 @@ def buttons(app, addns, outlabel, slowly_output):
     "Method for creating buttons on main window"
     # Frame for buttons
     button_frame = ctk.CTkFrame(app) # Create frame
-    button_frame.pack(side=ctk.RIGHT, fill=ctk.Y, padx=10, pady=0)
+    button_frame.pack(side=ctk.RIGHT, fill=ctk.Y, padx=5, pady=5)
     # Settings button
     settings_button = ctk.CTkButton(button_frame, text="Settings", command=lambda: show_settings(app, addns), corner_radius=20) # Create button
     settings_button.pack(pady=10, padx=10)
@@ -26,7 +26,7 @@ def pc_details(app, pc_frame_color):
     "Method for creating pc_details frame and working with voice command"
     # Frame
     info_frame = ctk.CTkFrame(app) # Create frame for PC Details and input with output
-    info_frame.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True, padx=0, pady=0) # Set properties for frame
+    info_frame.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=True, padx=5, pady=5) # Set properties for frame
     # Pc Details frame and label
     for adapter in wmi.WMI().Win32_VideoController(): # Getting gpu model
         gpu = adapter.Name

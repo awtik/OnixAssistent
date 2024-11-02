@@ -21,10 +21,11 @@ class Commands:
             'start_music_words': ['музыка', 'музыку'],
             'pause_music_words': ['пауза', 'приостанови', 'стоп', 'паузы', 'продолжи'],
             'next_track_words': ['следующий', 'пропусти', 'некст', 'скип', 'кип', 'следующее', 'следующая'],
-            'timetable_words': ['расписание', 'уроки', 'расписанием'],
+            'timetable_words': ['расписание', 'уроки', 'расписанием', 'расписанию'],
             'create_words': ['создай', 'создать', 'добавь'],
             'del_words': ['удали', 'убери', 'вычеркни', 'утолить'],
-            'show_words': ['покажи', 'список']
+            'show_words': ['покажи', 'список'],
+            'open_words': ['открой', 'запусти', 'открыть']
         } # Creating key words dict for check command
         ################################################################################################
         self.addons, self.mixer, self.music = Addons(), Music(), False # Initialization Classes and set music to False
@@ -56,7 +57,7 @@ class Commands:
                 self.slowly_output('Рад стараться!', outlabel)
             ################################################################################################
             # Apps open
-            if command.startswith("оникс открой "): # If 'оникс открой' in command: open app
+            if self.checkwords(command, self.wordKeys['open_words']): # If 'оникс открой' in command: open app
                 open_app_by_keyword(command, outlabel, self.slowly_output)
             ################################################################################################
             # Functions
