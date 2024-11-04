@@ -1,11 +1,10 @@
-import requests
-import webbrowser
-import datetime
+import requests, webbrowser, datetime, os
 from translate import Translator
 import json
 from io import BytesIO
 from PIL import Image
 from customtkinter import CTkImage
+import pywinstyles as pws
 
 class Addons:
     def __init__(self):
@@ -21,7 +20,7 @@ class Addons:
             5: 'saturday',
             6: 'sunday'
         } # Create a trascript for days
-        with open('other/settings.json', encoding='utf-8') as f:
+        with open(f'{os.curdir}/other/settings.json', encoding='utf-8') as f:
             self.data = json.load(f) # Loading settings
 
     def weather(self, city, icon_label):
@@ -64,7 +63,7 @@ class Addons:
         if prompt:  # If something in prompt
             webbrowser.open(f'https://yandex.ru/search/?text={prompt}') # Open browser with prompt
     
-    def date_time(self):
+    def time(self):
         "Method for getting time"
         out = ''
         date = datetime.datetime.now() # Getting date
@@ -96,14 +95,20 @@ class Addons:
     
     def load_settings(self):
         "Method for loading settings"
-        with open('other/settings.json', encoding='utf-8') as f:
+        with open(os.path.abspath(f'{os.curdir}/other/settings.json'), encoding='utf-8') as f:
             data = json.load(f)
             return data
     
     def save_settings(self, dataid, datavalue):
         "Method for saving settings"
-        with open('other/settings.json', encoding='utf-8') as f:
+        with open(f'{os.curdir}/other/settings.json', encoding='utf-8') as f:
             data = json.load(f)
         data[dataid] = datavalue
-        with open('other/settings.json', 'w', encoding='utf-8') as f:
+        with open(f'{os.curdir}/other/settings.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
+    
+    def check_transparency_enable(self, app):
+        if self.load_settings()['transparency'] == 'On' and self.load_settings()['theme'] == 'Dark':
+            pws.apply_style(app, 'acrylic') # Adding style for app
+        elif self.load_settings()['transparency'] == 'On' and self.load_settings()['theme'] == 'Light':
+            self.save_settings('transparency', 'Off')

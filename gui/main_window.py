@@ -1,7 +1,8 @@
 import customtkinter as ctk
 from gui.settings import show_settings
-from gui.ai_chat import show_ai_chat
+from gui.aiChat import show_ai_chat
 from gui.apps import show_apps
+from gui.help import show_help
 import platform, cpuinfo, psutil, wmi
 def buttons(app, addns, outlabel, slowly_output):
     "Method for creating buttons on main window"
@@ -9,7 +10,7 @@ def buttons(app, addns, outlabel, slowly_output):
     button_frame = ctk.CTkFrame(app) # Create frame
     button_frame.pack(side=ctk.RIGHT, fill=ctk.Y, padx=5, pady=5)
     # Settings button
-    settings_button = ctk.CTkButton(button_frame, text="Settings", command=lambda: show_settings(app, addns), corner_radius=20) # Create button
+    settings_button = ctk.CTkButton(button_frame, text="Settings", command=lambda: show_settings(app), corner_radius=20) # Create button
     settings_button.pack(pady=10, padx=10)
     # Chat button
     chat_button = ctk.CTkButton(button_frame, text="Chat with AI", command=lambda: show_ai_chat(app), corner_radius=20) # Create button
@@ -17,6 +18,9 @@ def buttons(app, addns, outlabel, slowly_output):
     # Apps button
     apps_button = ctk.CTkButton(button_frame, text='Apps', command=lambda: show_apps(app, outlabel, slowly_output), corner_radius=20)
     apps_button.pack(pady=10, padx=10)
+    # Help button
+    help_button = ctk.CTkButton(button_frame, text='Help', command=lambda: show_help(app), corner_radius=20)
+    help_button.pack(pady=10, padx=10)
     # Static weather icon label
     static_weather_icon_label = ctk.CTkLabel(button_frame, text='') # Create icon label
     static_weather_icon_label.pack(side=ctk.BOTTOM)

@@ -1,12 +1,16 @@
-import os
-import json
+import os, json, shutil
 
 def get_apps(apps_folder='C:/Onix/apps'):
     "Getting all app names"
+    os.makedirs(apps_folder, exist_ok=True) # Create a folder if not exist
     return [os.path.splitext(app)[0] for app in os.listdir(apps_folder)] # Return list with all apps in folder
 
-def load_keywords(outlabel, slowly_output, file_path='other/apps.json'):
+def load_keywords(outlabel, slowly_output, file_path='C:/Onix/apps.json'):
     "Getting all keywords for apps from json"
+    if not os.path.exists('C:/Onix/apps.json'): # Create settings.json file if not exists
+        path = f"{os.path.abspath(os.curdir)}/other/apps.json" # Find settings in project folder
+        new_location = 'C:/Onix/' # Set new path for settings
+        shutil.copy(path, new_location) # Copy settings from project to new path
     if os.path.exists(file_path) and os.path.getsize(file_path) > 0: # If apps.json in folder:
         with open(file_path, 'r') as file: # Open apps.json
             try:
@@ -16,7 +20,7 @@ def load_keywords(outlabel, slowly_output, file_path='other/apps.json'):
                 return {}
     return {}
 
-def save_keywords(keywords, file_path='other/apps.json'):
+def save_keywords(keywords, file_path='C:/Onix/apps.json'):
     "Saving keywords for app in json file"
     with open(file_path, 'w') as file: # Open json file
         json.dump(keywords, file, indent=4) # Save words in json

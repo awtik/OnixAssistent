@@ -1,17 +1,15 @@
 from modules.recognizeClass import Recognize
+import threading, os, customtkinter as ctk
 from modules.commands import Commands
 from modules.addons import Addons
-import customtkinter as ctk
-import threading
 from gui.main_window import buttons, pc_details
 
 cmnds, r, addns = Commands(), Recognize(), Addons() # Initialization Classes
-
 ###################################################################################################
 # Main window Settings
 theme = addns.load_settings()['theme'] # Getting theme from settings
-ctk.set_appearance_mode(theme) # Set theme from settings
-ctk.set_default_color_theme("blue") # Set color for app
+ctk.set_appearance_mode(addns.load_settings()['theme']) # Set theme from settings
+ctk.set_default_color_theme(f'{os.curdir}/colors/{addns.load_settings()['color'].lower()}.json') # Set color for app
 app = ctk.CTk() # Create main window
 app.title("Onix") # Set title
 app.geometry("600x400") # Set size for app
@@ -31,4 +29,5 @@ buttons(app, addns, outlabel, cmnds.slowly_output)
 recognition_thread = threading.Thread(target=r.recognize_speech, args=(label, cmnds, outlabel, app, cmnds.slowly_output, weather_icon_label), daemon=True)
 recognition_thread.start() # Start recognition
 
+addns.check_transparency_enable(app)
 app.mainloop()

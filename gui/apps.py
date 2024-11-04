@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from modules.apps import get_apps, save_keywords, load_keywords
-
+from modules.addons import Addons
+addns = Addons()
 # Apps window
 def show_apps(app, outlabel, slowly_output):
     "Showing apps window"
@@ -17,9 +18,9 @@ def show_apps(app, outlabel, slowly_output):
 
     # Labels for columns
     apps_label = ctk.CTkLabel(scrollable_frame, text='App')
-    apps_label.grid(row=0, column=0, pady=5, padx=10, sticky="w")
+    apps_label.grid(row=0, column=0, pady=5, padx=10)
     keywords_label = ctk.CTkLabel(scrollable_frame, text='Keyword')
-    keywords_label.grid(row=0, column=1, pady=5, padx=10, sticky="w")
+    keywords_label.grid(row=0, column=1, pady=5, padx=10)
 
     # Loading apps and keywords
     apps = get_apps()
@@ -48,3 +49,4 @@ def show_apps(app, outlabel, slowly_output):
     # Save button
     button_save = ctk.CTkButton(scrollable_frame, text="Save", command=save_settings)
     button_save.grid(row=len(apps) + 1, column=0, pady=20)
+    addns.check_transparency_enable(apps_window) # Adding style for app

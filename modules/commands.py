@@ -1,11 +1,9 @@
-import random
-import json
-import time
+import random, json, time, os
 from modules.addons import Addons
 from modules.music import Music
 from modules.apps import open_app_by_keyword
 
-with open('other/settings.json', encoding='utf-8') as f: # Getting settings from json
+with open(f'{os.curdir}/other/settings.json', encoding='utf-8') as f: # Getting settings from json
     data = json.load(f)
 city = data["city"] # Setting city from settings
 ################################################################################################
@@ -38,7 +36,7 @@ class Commands:
             outlabel.configure(text=current_text + char) # Adding new char to current text
             time.sleep(delay) # Delay
 
-    def checkwords(self, command, wordlist):
+    def check_words(self, command, wordlist):
         "Check key words in command"
         command = command.split()
         for i in command:
@@ -51,42 +49,42 @@ class Commands:
             icon_label.configure(image='') # Clear weather icon
             ################################################################################################
             # Basic dialog answers
-            if self.checkwords(command, self.wordKeys['hello_words']): # Check words in user voice data
+            if self.check_words(command, self.wordKeys['hello_words']): # Check words in user voice data
                 self.slowly_output(f'{random.choice(self.wordKeys['hello_words']).capitalize()}!', outlabel) # Print answer from word list
-            if self.checkwords(command, self.wordKeys['thx_words']):
+            if self.check_words(command, self.wordKeys['thx_words']):
                 self.slowly_output('Рад стараться!', outlabel)
             ################################################################################################
             # Apps open
-            if self.checkwords(command, self.wordKeys['open_words']): # If 'оникс открой' in command: open app
+            if self.check_words(command, self.wordKeys['open_words']): # If 'оникс открой' in command: open app
                 open_app_by_keyword(command, outlabel, self.slowly_output)
             ################################################################################################
             # Functions
-            if self.checkwords(command, self.wordKeys['weather_words']):
+            if self.check_words(command, self.wordKeys['weather_words']):
                 self.slowly_output('Получаем данные о погоде...', outlabel)
                 self.slowly_output(self.addons.weather(city, icon_label), outlabel) # Launch weather func from Addons class with city arg
 
-            if self.checkwords(command, self.wordKeys['search_words']):
+            if self.check_words(command, self.wordKeys['search_words']):
                 self.addons.search(command, 'оникс')
                 self.slowly_output('Поиск...', outlabel)
 
-            if self.checkwords(command, self.wordKeys['time_words']):
-                self.slowly_output(self.addons.date_time(), outlabel)
+            if self.check_words(command, self.wordKeys['time_words']):
+                self.slowly_output(self.addons.time(), outlabel)
             ################################################################################################
             # Music
-            if self.checkwords(command, self.wordKeys['start_music_words']) and not 'открой' in command:
+            if self.check_words(command, self.wordKeys['start_music_words']) and not 'открой' in command:
                 self.slowly_output(self.mixer.start_music(), outlabel)
                 self.music = True
-            if self.checkwords(command, self.wordKeys['pause_music_words']) and not 'открой' in command:
+            if self.check_words(command, self.wordKeys['pause_music_words']) and not 'открой' in command:
                 self.mixer.pause_music()
-            if self.checkwords(command, self.wordKeys['next_track_words']) and self.music:
+            if self.check_words(command, self.wordKeys['next_track_words']) and self.music:
                 self.slowly_output(self.mixer.next_track(), outlabel)
             ################################################################################################
             # Timetable
-            if self.checkwords(command, self.wordKeys['timetable_words']):
+            if self.check_words(command, self.wordKeys['timetable_words']):
                 self.slowly_output(self.addons.timetable(), outlabel)
             ################################################################################################
             # Exit
-            if self.checkwords(command, self.wordKeys['exit_words']):
+            if self.check_words(command, self.wordKeys['exit_words']):
                 self.slowly_output('Был рад помочь!', outlabel)
                 time.sleep(1.5)
                 app.destroy()
