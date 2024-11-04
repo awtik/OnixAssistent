@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from modules.addons import Addons
+addns = Addons()
 def show_help(app):
     "Open settings window"
     # Window Settings
@@ -18,3 +20,4 @@ def show_help(app):
     # Other help label
     help_label = ctk.CTkLabel(scrollable_frame, text='Если у вас проиходят ошибки, либо есть какие-то вопросы.\ntg: @valerarsdj .')
     help_label.pack(pady=20)
+    addns.check_transparency_enable(help_window) # Adding style for app

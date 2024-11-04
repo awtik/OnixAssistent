@@ -1,8 +1,8 @@
 {
     "city": "Кропоткин",
     "theme": "Dark",
-    "color": "Blue",
-    "transparency": "Off",
+    "color": "Metal",
+    "transparency": "On",
     "monday": [
         "Разговоры о важном",
         "Математика",

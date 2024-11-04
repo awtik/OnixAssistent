@@ -25,7 +25,7 @@ def save_keywords(keywords, file_path='C:/Onix/apps.json'):
     with open(file_path, 'w') as file: # Open json file
         json.dump(keywords, file, indent=4) # Save words in json
 
-def open_app_by_keyword(command, outlabel, slowly_output, apps_folder='C:/Onix/apps'):
+def open_app_by_keyword(command,outlabel, slowly_output, apps_folder='C:/Onix/apps'):
     "Open app by keyword"
     keyword = command.replace("оникс открой ", "").strip() # Get keword from command
     keywords = load_keywords(outlabel, slowly_output) # Loading keywords
@@ -35,9 +35,7 @@ def open_app_by_keyword(command, outlabel, slowly_output, apps_folder='C:/Onix/a
             app_path = os.path.join(apps_folder, f"{app_name}.lnk") # Creating path for app
             if os.path.exists(app_path): # If app in folder:
                 os.startfile(app_path) # Open app
-                slowly_output(f"Запускаю приложение: {app_name}", outlabel)
-                return
+                return f"Запускаю приложение: {app_name}"
             else:
-                slowly_output(f"Файл приложения {app_name} не найден в папке {apps_folder}.", outlabel)
-                return
-    slowly_output(f"Приложение с ключевым словом '{keyword}' не найдено.", outlabel)
+                return f"Файл приложения {app_name} не найден в папке {apps_folder}."
+    return f"Приложение с ключевым словом '{keyword}' не найдено.", outlabel

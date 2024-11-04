@@ -1,7 +1,8 @@
-import random, json, time, os
+import random, json, time, os, asyncio, threading
 from modules.addons import Addons
 from modules.music import Music
 from modules.apps import open_app_by_keyword
+from modules.textToSpeech import text_to_speech
 
 with open(f'{os.curdir}/other/settings.json', encoding='utf-8') as f: # Getting settings from json
     data = json.load(f)
@@ -28,7 +29,7 @@ class Commands:
         ################################################################################################
         self.addons, self.mixer, self.music = Addons(), Music(), False # Initialization Classes and set music to False
     
-    def slowly_output(self, text, outlabel, delay=0.02):
+    def slowly_output(self, text, outlabel, delay=0.01):
         "Method for slowly output in label for output"
         outlabel.configure(text='') # Set outlabel empty
         for char in text:
@@ -50,42 +51,60 @@ class Commands:
             ################################################################################################
             # Basic dialog answers
             if self.check_words(command, self.wordKeys['hello_words']): # Check words in user voice data
-                self.slowly_output(f'{random.choice(self.wordKeys['hello_words']).capitalize()}!', outlabel) # Print answer from word list
+                text = f'{random.choice(self.wordKeys['hello_words']).capitalize()}!'
+                self.slowly_output(text, outlabel) # Print answer from word list
+                asyncio.run(text_to_speech(text)) # Speech recognition
             if self.check_words(command, self.wordKeys['thx_words']):
                 self.slowly_output('Рад стараться!', outlabel)
+                asyncio.run(text_to_speech('Рад стараться!')) # Speech recognition
             ################################################################################################
             # Apps open
             if self.check_words(command, self.wordKeys['open_words']): # If 'оникс открой' in command: open app
-                open_app_by_keyword(command, outlabel, self.slowly_output)
+                text = open_app_by_keyword(command, outlabel, self.slowly_output)
+                self.slowly_output(text, outlabel)
+                asyncio.run(text_to_speech(text)) # Speech recognition
             ################################################################################################
             # Functions
             if self.check_words(command, self.wordKeys['weather_words']):
                 self.slowly_output('Получаем данные о погоде...', outlabel)
-                self.slowly_output(self.addons.weather(city, icon_label), outlabel) # Launch weather func from Addons class with city arg
+                weather = self.addons.weather(city, icon_label)
+                self.slowly_output(weather, outlabel) # Launch weather func from Addons class with city arg
+                asyncio.run(text_to_speech(weather)) # Speech recognition
 
             if self.check_words(command, self.wordKeys['search_words']):
                 self.addons.search(command, 'оникс')
                 self.slowly_output('Поиск...', outlabel)
+                asyncio.run(text_to_speech('Поиск')) # Speech recognition
 
             if self.check_words(command, self.wordKeys['time_words']):
-                self.slowly_output(self.addons.time(), outlabel)
+                time = self.addons.time()
+                self.slowly_output(time, outlabel)
+                asyncio.run(text_to_speech(time)) # Speech recognition
             ################################################################################################
             # Music
             if self.check_words(command, self.wordKeys['start_music_words']) and not 'открой' in command:
-                self.slowly_output(self.mixer.start_music(), outlabel)
+                text = self.mixer.start_music()
+                self.slowly_output(text, outlabel)
+                asyncio.run(text_to_speech(text)) # Speech recognition
                 self.music = True
             if self.check_words(command, self.wordKeys['pause_music_words']) and not 'открой' in command:
                 self.mixer.pause_music()
+                asyncio.run(text_to_speech('Пауза')) # Speech recognition
             if self.check_words(command, self.wordKeys['next_track_words']) and self.music:
-                self.slowly_output(self.mixer.next_track(), outlabel)
+                text = self.mixer.next_track()
+                self.slowly_output(text, outlabel)
+                asyncio.run(text_to_speech(text)) # Speech recognition
             ################################################################################################
             # Timetable
             if self.check_words(command, self.wordKeys['timetable_words']):
-                self.slowly_output(self.addons.timetable(), outlabel)
+                text = self.addons.timetable()
+                self.slowly_output(text, outlabel)
+                asyncio.run(text_to_speech(text)) # Speech recognition
             ################################################################################################
             # Exit
             if self.check_words(command, self.wordKeys['exit_words']):
                 self.slowly_output('Был рад помочь!', outlabel)
+                asyncio.run(text_to_speech('Был рад помочь!')) # Speech recognition
                 time.sleep(1.5)
                 app.destroy()
                 exit()

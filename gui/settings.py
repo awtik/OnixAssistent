@@ -7,7 +7,7 @@ def show_settings(app):
     "Open settings window"
     # Window Settings
     settings_window = ctk.CTkToplevel(app) # Create a TopLevelWindow
-    settings_window.geometry("380x250") # Set size for this window
+    settings_window.geometry("380x300") # Set size for this window
     settings_window.title("Settings") # Set title for window
     settings_window.resizable(False, False) # Disable resize function
     settings_window.grab_set() # Disable interaction with other windows
@@ -35,7 +35,7 @@ def save_settings(win, city, app):
         addns.save_settings('city', city.get().capitalize()) # Saving city in settings.json
     win.destroy() # Destroy settings win
     app.destroy() # Destroy main win
-    os.system('python main.py') # Reboot script
+    os.system('python main.pyw') # Reboot script
     exit()
 
 def theme_widgets(app):
@@ -43,7 +43,7 @@ def theme_widgets(app):
     theme_label = ctk.CTkLabel(app, text='Choose theme:', font=('Segoe UI', 18)) # Label for themes
     theme_label.grid(padx=5, pady=5, row=0, column=1, sticky='w')
     theme_combobox = ctk.CTkComboBox(app, values=["Light", "Dark"],
-                                     command=theme_combobox_call)
+                                     command=theme_combobox_call, state='readonly')
     theme_combobox.set(addns.load_settings()['theme'])
     theme_combobox.grid(row=1, column=1)
 
@@ -51,7 +51,7 @@ def transparency_widgets(app):
     transparency_label = ctk.CTkLabel(app, text='Transparency:', font=('Segoe UI', 18))
     transparency_label.grid(padx=5, row=2, column=0, sticky='w')
     transparency_combobox = ctk.CTkComboBox(app, values=["On", "Off"],
-                                     command=transparency_combobox_call)
+                                     command=transparency_combobox_call, state='readonly')
     transparency_combobox.set(addns.load_settings()['transparency'])
     transparency_combobox.grid(padx=5, pady=5, row=3, column=0, sticky='w')
     warning_label = ctk.CTkLabel(app, text='(Windows 10+ | Dark theme only)')
@@ -61,7 +61,7 @@ def color_widgets(app):
     color_label = ctk.CTkLabel(app, text='Choose color:', font=('Segoe UI', 18)) # Label for themes
     color_label.grid(padx=5, pady=5, row=2, column=1, sticky='w')
     color_combobox = ctk.CTkComboBox(app, values=["Blue", "Green", "Lavender", "Metal"],
-                                     command=color_combobox_call)
+                                     command=color_combobox_call, state='readonly')
     color_combobox.set(addns.load_settings()['color'])
     color_combobox.grid(row=3, column=1)
 
