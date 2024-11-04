@@ -14,7 +14,7 @@
 
 ## **Requirements:**
 ```
-pip install customtkinter asyncio py-cpuinfo psutil wmi requests datetime translate pillow pywinstyles g4f pygame vosk pyaudio
+pip install customtkinter asyncio py-cpuinfo psutil wmi requests datetime translate pillow pywinstyles g4f pygame vosk pyaudio edge_tts
 ```
 Only **Python**, Only **hardcore**
 
