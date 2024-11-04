@@ -14,7 +14,7 @@
 
 ## **Requirements:**
 ```
-pip install requirements
+pip install customtkinter asyncio py-cpuinfo psutil wmi requests datetime translate pillow pywinstyles g4f pygame vosk pyaudio
 ```
 Only **Python**, Only **hardcore**
 
