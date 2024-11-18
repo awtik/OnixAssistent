@@ -1,8 +1,11 @@
 {
     "city": "Кропоткин",
     "theme": "Dark",
-    "color": "Metal",
+    "color": "Rime",
     "transparency": "On",
+    "input_device": 1,
+    "output_device": 4,
+    "tts": "Off",
     "monday": [
         "Разговоры о важном",
         "Математика",

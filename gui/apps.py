@@ -1,52 +1,69 @@
 import customtkinter as ctk
-from modules.apps import get_apps, save_keywords, load_keywords
+from tkinter import filedialog
+from modules.apps import save_keywords, load_keywords
 from modules.addons import Addons
-addns = Addons()
-# Apps window
-def show_apps(app, outlabel, slowly_output):
-    "Showing apps window"
-    # Window settings
-    apps_window = ctk.CTkToplevel(app)  # Creating TopLevel window
-    apps_window.geometry("400x350")  # Setting window size
-    apps_window.title("Настройки")  # Setting window title
-    apps_window.resizable(False, False) # Disable resize function
-    apps_window.grab_set()  # Disable interaction with other windows
 
-    # Creating scrollable frame
-    scrollable_frame = ctk.CTkScrollableFrame(apps_window, label_text="Apps", width=400, height=300)
-    scrollable_frame.pack(fill="both", expand=True)
+addons = Addons()
 
-    # Labels for columns
-    apps_label = ctk.CTkLabel(scrollable_frame, text='App')
-    apps_label.grid(row=0, column=0, pady=5, padx=10)
-    keywords_label = ctk.CTkLabel(scrollable_frame, text='Keyword')
+def show_apps(main_app, outlabel, slowly_output):
+    settings_window = ctk.CTkToplevel(main_app)
+    settings_window.geometry("500x400")
+    settings_window.title("Настройки")
+    settings_window.resizable(False, False)
+    settings_window.grab_set()
+
+    apps_frame = ctk.CTkScrollableFrame(settings_window, label_text="Apps", width=500, height=350)
+    apps_frame.pack(fill="both", expand=True)
+
+    path_label = ctk.CTkLabel(apps_frame, text="Path")
+    path_label.grid(row=0, column=0, pady=5, padx=10)
+
+    keywords_label = ctk.CTkLabel(apps_frame, text="Keyword")
     keywords_label.grid(row=0, column=1, pady=5, padx=10)
 
-    # Loading apps and keywords
-    apps = get_apps()
     keywords = load_keywords(outlabel, slowly_output)
+    path_entries = {}
+    keyword_entries = {}
 
-    rename_entries = {} # Widgets dict
+    def add_app_row(app_name=None, app_path=""):
+        index = len(path_entries) + 1
+        app_name = app_name or f"app_{index}"
 
-    # Showing labels and entries
-    for index, app_name in enumerate(apps, start=1):
-        # Label with app name
-        label = ctk.CTkLabel(scrollable_frame, text=app_name)
-        label.grid(row=index, column=0, padx=10, pady=5, sticky="w")
-        
-        # Entry case for keywords
-        entry = ctk.CTkEntry(scrollable_frame, width=200)
-        entry.grid(row=index, column=1, padx=10, pady=5)
-        entry.insert(0, keywords.get(app_name, ""))  # Insert keywords if it in apps.json
-        rename_entries[app_name] = entry
+        path_entry = ctk.CTkEntry(apps_frame, width=230)
+        path_entry.grid(row=index, column=0, padx=10, pady=5)
+        path_entry.insert(0, app_path)
+        path_entries[app_name] = path_entry
+
+        def choose_path():
+            app_path = filedialog.askopenfilename(title=f"Выберите файл для {app_name}")
+            if app_path:
+                path_entries[app_name].delete(0, ctk.END)
+                path_entries[app_name].insert(0, app_path)
+                add_app_row()
+
+        choose_path_button = ctk.CTkButton(apps_frame, text="...", command=choose_path, width=30)
+        choose_path_button.grid(row=index, column=0, padx=10, sticky='e')
+
+        keyword_entry = ctk.CTkEntry(apps_frame, width=100)
+        keyword_entry.grid(row=index, column=1, padx=10, pady=5)
+        keyword_entry.insert(0, keywords.get(app_name, {}).get("keyword", ""))
+        keyword_entries[app_name] = keyword_entry
+
+    for app_name, data in keywords.items():
+        add_app_row(app_name=app_name, app_path=data.get("path", ""))
+    add_app_row()
 
     def save_settings():
-        "Saving keywords"
-        new_keywords = {app_name: entry.get() for app_name, entry in rename_entries.items()}
-        save_keywords(new_keywords)  # Saving keywords
-        apps_window.destroy()  # Close window
+        new_keywords = {}
+        for app_name, path_entry in path_entries.items():
+            path = path_entry.get().strip()
+            keyword = keyword_entries[app_name].get().strip()
+            if path and keyword:
+                new_keywords[app_name] = {"path": path, "keyword": keyword}
+        save_keywords(new_keywords)
+        settings_window.destroy()
 
-    # Save button
-    button_save = ctk.CTkButton(scrollable_frame, text="Save", command=save_settings)
-    button_save.grid(row=len(apps) + 1, column=0, pady=20)
-    addns.check_transparency_enable(apps_window) # Adding style for app
+    save_button = ctk.CTkButton(apps_frame, text="Save", command=save_settings)
+    save_button.grid(row=len(path_entries) + 15, column=0, pady=20)
+
+    addons.check_transparency_enable(settings_window)

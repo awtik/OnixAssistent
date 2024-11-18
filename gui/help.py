@@ -1,23 +1,24 @@
 import customtkinter as ctk
 from modules.addons import Addons
-addns = Addons()
-def show_help(app):
-    "Open settings window"
-    # Window Settings
-    help_window = ctk.CTkToplevel(app) # Create a TopLevelWindow
-    help_window.geometry("400x400") # Set size for this window
-    help_window.title("Help") # Set title for window
-    help_window.resizable(False, False) # Disable resize function
-    help_window.grab_set() # Disable interaction with other windows
-    # Creating scrollable frame for settings
-    scrollable_frame = ctk.CTkScrollableFrame(help_window, label_text="Help", width=400, height=300)
-    scrollable_frame.pack(fill="both", expand=True)
-    # Apps label
-    apps_label = ctk.CTkLabel(scrollable_frame, text='Приложения', font=('Segoe UI', 18))
-    apps_label.pack(pady=5)
-    apps_label2 = ctk.CTkLabel(scrollable_frame, text='Перед использованием обязательно\nперенесите ярлыки в папку C:/Onix/apps')
-    apps_label2.pack(pady=5)
-    # Other help label
-    help_label = ctk.CTkLabel(scrollable_frame, text='Если у вас проиходят ошибки, либо есть какие-то вопросы.\ntg: @valerarsdj .')
+
+addons = Addons()
+
+def show_help(main_app):
+    """Open help window with usage information."""
+    
+    help_window = ctk.CTkToplevel(main_app)
+    help_window.geometry("400x400")
+    help_window.title("Help")
+    help_window.resizable(False, False)
+    help_window.grab_set()
+
+    help_frame = ctk.CTkScrollableFrame(help_window, label_text="Help", width=400, height=300)
+    help_frame.pack(fill="both", expand=True)
+
+    help_label = ctk.CTkLabel(
+        help_frame,
+        text="Если у вас происходят ошибки, либо есть вопросы.\nTelegram: @valerarsdj"
+    )
     help_label.pack(pady=20)
-    addns.check_transparency_enable(help_window) # Adding style for app
+
+    addons.check_transparency_enable(help_window)
