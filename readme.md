@@ -12,10 +12,6 @@
 - Schedule display (for advanced users)
 > My schedule is set by default
 
-## **Requirements:**
-```
-pip install vosk pygame asyncio customtkinter platform cpuinfo psutil wmi os requests webbrowser datetime translate json io pillow g4f pyaudio shutil text2num
-```
 Only **Python**, Only **hardcore**
 
 # Using
